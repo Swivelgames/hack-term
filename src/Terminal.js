@@ -91,18 +91,18 @@ export default class Terminal {
 		this.prompt();
 	}
 
-	parseReadline(msg) {
+	parseReadline(raw) {
 		let ast = '';
 
 		try {
-			ast = parser.parse(msg);
+			ast = parser.parse(raw);
 		} catch (e) {
 			this.resolve('stderr', `-term: ${e}`);
 			this.handleError(e);
 			return;
 		}
 
-		this.resolve('command.exec', ast);
+		this.resolve('command.exec', { raw, ast });
 	}
 
 	prompt() {
@@ -172,9 +172,12 @@ export default class Terminal {
 		mans[name] = man;
 	}
 
-	handleCommand(ast) {
+	handleCommand(payload) {
+		const { ast } = payload;
 		if (Array.isArray(ast)) {
-			ast.forEach(cmd => this.handleCommand(cmd));
+			ast.forEach(
+				cmd => this.handleCommand({ ast: cmd, raw: payload.raw })
+			);
 			return;
 		}
 
@@ -206,7 +209,7 @@ export default class Terminal {
 
 		let resp;
 		try {
-			resp = commands[cmd](...argv);
+			resp = commands[cmd](payload);
 		} catch (e) {
 			this.handleError(e);
 			return;

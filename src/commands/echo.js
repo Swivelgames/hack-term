@@ -11,12 +11,12 @@ echo -n "Hello World"
 
 export default terminal => ({
 	man,
-	handler: (...args) => {
+	handler: ({ ast: { argv } }) => {
 		const flags = {
 			eom: os.EOL
 		};
 
-		const msg = args.reduce((s, cV) => {
+		const msg = argv.reduce((s, cV) => {
 			const ret = s ? [s] : [];
 			if (typeof cV === 'string') ret.push(cV);
 			else if (cV.name === 'n') {
