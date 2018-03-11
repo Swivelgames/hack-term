@@ -1,3 +1,4 @@
+import os from 'os';
 import fs from 'fs';
 import path from 'path';
 import meddle from 'meddle';
@@ -26,7 +27,7 @@ export default class Terminal {
 		this.initBuiltIns();
 
 		if (this.config.motd) {
-			this.resolve('stdout', this.config.motd || '');
+			this.resolve('stdout', `${this.config.motd || ''}${os.EOL}`);
 		}
 	}
 
@@ -69,7 +70,9 @@ export default class Terminal {
 
 		// Attach listeners
 		this.when('command.exec').then(cmd => this.handleCommand(cmd));
-		this.when('command.exit').then(() => this.prompt());
+		this.when('command.exit').then(() => {
+			this.prompt();
+		});
 		this.stdout.then(msg => this.echo(msg));
 		this.stderr.then(msg => this.echo(msg, true, 'error'));
 		this.readline.then(msg => this.parseReadline(msg));
@@ -89,7 +92,17 @@ export default class Terminal {
 	}
 
 	parseReadline(msg) {
-		this.resolve('command.exec', parser.parse(msg));
+		let ast = '';
+
+		try {
+			ast = parser.parse(msg);
+		} catch (e) {
+			this.resolve('stderr', `-term: ${e}`);
+			this.handleError(e);
+			return;
+		}
+
+		this.resolve('command.exec', ast);
 	}
 
 	prompt() {
@@ -174,7 +187,7 @@ export default class Terminal {
 			while (errors.length) {
 				this.resolve('stderr', errors.shift());
 			}
-			this.resolve('command.exit', 1);
+			this.resolve('command.exit', 0);
 			return;
 		}
 
@@ -199,8 +212,12 @@ export default class Terminal {
 			return;
 		}
 
-		if (resp !== void 0) {
-			this.resolve('command.exit', parseInt(`${resp}`, 10));
+		if (resp === void 0) return;
+
+		if (resp === 0) {
+			this.resolve('command.exit', 0);
+		} else {
+			this.reject('command.exit', resp);
 		}
 	}
 
@@ -208,7 +225,7 @@ export default class Terminal {
 		if (e instanceof Error) {
 			const { errors } = Private.get(this);
 			errors.push(e);
-			this.resolve('stderr', 'An error occurred: type /error to view');
+			this.resolve('stderr', 'Error: (Type /error to view stack)');
 			this.resolve('command.exit', 1);
 			return;
 		}
