@@ -1,6 +1,10 @@
 # term-repl
 
-Simple Terminal-style REPL
+Simple, Hackable Terminal-style REPL
+
+* Hackable, via `.use()` and `.registerCommand()`
+* Thenable Events (`.when('stdout').then(() => /*something outputted! */)`)
+
 
 ```javascript
 import { Terminal } from 'term-repl';
