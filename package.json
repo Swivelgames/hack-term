@@ -4,7 +4,7 @@
   "description": "Simple Terminal-style REPL",
   "author": "Joseph Dalrymple <me@swivel.in>",
   "license": "AGPLv3",
-  "main": "./lib/index.js",
+  "main": "./lib/Terminal.js",
   "scripts": {
     "all": "yarn && yarn build && yarn start",
     "clean": "rm -rf lib/ node_modules/",
