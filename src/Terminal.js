@@ -24,6 +24,10 @@ export default class Terminal {
 		this.initEvents();
 		this.initReadline();
 		this.initBuiltIns();
+
+		if (this.config.motd) {
+			this.resolve('stdout', this.config.motd || '');
+		}
 	}
 
 	initBuiltIns() {
@@ -47,7 +51,7 @@ export default class Terminal {
 	initDispatcher() {
 		const Priv = Private.get(this);
 
-		Priv.disp = new Dispatcher(null, null, msg => this.resolve('stderr', msg));
+		Priv.disp = new Dispatcher(null, null, this.handleError.bind(this));
 
 		const { disp } = Priv;
 
