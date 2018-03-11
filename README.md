@@ -5,7 +5,6 @@ Simple, Hackable Terminal-style REPL
 * Hackable, via `.use()` and `.registerCommand()`
 * Thenable Events (`.when('stdout').then(() => /*something outputted! */)`)
 
-
 ```javascript
 import { Terminal } from 'term-repl';
 
@@ -15,6 +14,17 @@ const TerminalInstance = new Terminal({
 	motd: 'Welcome to the Hackable REPL',
 	verbose: false
 });
+```
+
+```
+$ yarn start
+
+Welcome to the Hackable REPL
+
+localuser$ /echo "Hello World"
+Hello World
+
+localuser$
 ```
 
 ## Events
