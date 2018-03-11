@@ -8,7 +8,7 @@ import parser from './parser/parser.js';
 
 const Private = new WeakMap();
 
-export default class TermRepl {
+export default class Terminal {
 	constructor(config) {
 		meddle(this);
 

@@ -1,4 +1,4 @@
-import Terminal from './TermRepl.js';
+import Terminal from './Terminal.js';
 
 export { Terminal };
 
