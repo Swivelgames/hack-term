@@ -1,4 +1,4 @@
-# term-repl
+# hack-term
 
 Simple, Hackable Terminal-style REPL
 
@@ -6,7 +6,7 @@ Simple, Hackable Terminal-style REPL
 * Thenable Events (`.when('stdout').then(() => /*something outputted! */)`)
 
 ```javascript
-import { Terminal } from 'term-repl';
+import { Terminal } from 'hack-term';
 
 const TerminalInstance = new Terminal({
 	promptDelim: '$ ',
@@ -76,7 +76,7 @@ const myMiddleware = (Term) => {
 TerminalInstance.use(myMiddleware);
 ```
 
-See [`API.md`](https://github.com/Swivelgames/term-repl/wiki/Terminal-API) for more details!
+See [`API.md`](https://github.com/Swivelgames/hack-term/wiki/Terminal-API) for more details!
 
 ### .registerCommand( name, package )
 

@@ -1,5 +1,5 @@
 {
-  "name": "term-repl",
+  "name": "hack-term",
   "version": "0.0.1",
   "description": "Simple Terminal-style REPL",
   "author": "Joseph Dalrymple <me@swivel.in>",
